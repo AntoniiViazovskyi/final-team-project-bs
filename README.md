@@ -17,8 +17,6 @@ npm run build
 npm test
 ```
 
-После запуска health-check доступен по адресу `GET /health`.
-
 ## Структура
 
 - `src/controllers` — обработчики запросов;
@@ -31,9 +29,4 @@ npm test
 - `src/utils` — общие утилиты;
 - `src/constants` — константы;
 - `src/templates` — шаблоны писем;
-- `src/modules` — заготовки доменов из командного ТЗ.
-
-## Домены из командного ТЗ
-
-В `src/modules` зарезервированы модули `auth`, `users`, `locations`,
-`categories` и `feedbacks`. Их прикладная реализация намеренно не добавлена.
+- `src/routes` — маршруты приложения.
