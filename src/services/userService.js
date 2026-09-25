@@ -1,6 +1,6 @@
-import UserModel from '../models/User/UserModel.js';
+import { User } from "../models/user.js";
 
 export const getUserById = async (userId) => {
-  const user = await UserModel.findById(userId).select('-password');
+  const user = await User.findById(userId).select("-password");
   return user;
 };
