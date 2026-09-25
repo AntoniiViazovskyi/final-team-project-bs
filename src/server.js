@@ -9,6 +9,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 
+import userRouter from './routes/userRouter.js';
+
 const PORT = process.env.PORT ?? 3000;
 
 const app = express();
@@ -19,10 +21,12 @@ app.use(
     limit: '100kb',
   }),
 );
+
 app.use(logger);
 app.use(cors());
 app.use(cookieParser());
 
+app.use('/api/users', userRouter);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
