@@ -32,7 +32,7 @@ app.use(cookieParser());
 app.use('/api', authRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/categories', categoriesRoutes);
-app.use('/api', locationsRoutes);
+app.use('/api/locations', locationsRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
