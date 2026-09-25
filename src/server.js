@@ -5,9 +5,11 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 
+import { connectMongoDB } from './db/connectMongoDB.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
+import authRoutes from './routes/authRoutes.js';
 
 import userRouter from './routes/userRouter.js';
 
@@ -26,18 +28,22 @@ app.use(logger);
 app.use(cors());
 app.use(cookieParser());
 
+app.use('/api', authRoutes);
 app.use('/api/users', userRouter);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
 
-export const startServer = () =>
-  app.listen(PORT, () => {
+export const startServer = async () => {
+  await connectMongoDB();
+
+  return app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
+};
 
 if (process.env.NODE_ENV !== 'test') {
-  startServer();
+  await startServer();
 }
 
 export { app };
