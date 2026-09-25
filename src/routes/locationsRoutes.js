@@ -5,6 +5,6 @@ import { getAllLocations } from '../controllers/locationsController.js';
 
 const locationsRoutes = Router();
 
-locationsRoutes.get('/app/locations', celebrate(getAllLocationsSchema), getAllLocations);
+locationsRoutes.get('/locations', celebrate(getAllLocationsSchema), getAllLocations);
 
 export default locationsRoutes;

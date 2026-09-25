@@ -12,6 +12,7 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import authRoutes from './routes/authRoutes.js';
 import userRouter from './routes/userRouter.js';
 import categoriesRoutes from './routes/categoriesRoutes.js';
+import locationsRoutes from './routes/locationsRoutes.js';
 
 const PORT = process.env.PORT ?? 3000;
 
@@ -31,6 +32,7 @@ app.use(cookieParser());
 app.use('/api', authRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/categories', categoriesRoutes);
+app.use('/api', locationsRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
