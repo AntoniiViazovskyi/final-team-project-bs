@@ -11,24 +11,4 @@ search: Joi.string().trim().allow(''),
 };
 
 
-// {
-//   _id: ObjectId(...),
-//   image: "...",
-//   name: "Сонячна Рів'єра",
-//   locationType: "more",
-//   region: "chornomorske-uzberezhzhya",
-//   rate: 4.5,
-//   description: "...",
-//   coordinates: {
-//     lat: 46.0263,
-//     lon: 30.4577
-//   },
-//   ownerId: ObjectId(...),
-//   feedbacksId: [...]
-// }
-// створити ПУБЛІЧНИЙ ендпоінт для ОТРИМАННЯ списку всіх місць
-// відпочинку з підтримкою:
-// Пагінації (напр., ?page=1&limit=10).
-// Фільтрації за регіонами (напр., ?region=id1).
-// Фільтрації за типом локації (напр., ?type=id1).
-// Пошуку за назвою (напр., ?search=затока)
+
