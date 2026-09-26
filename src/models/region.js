@@ -2,10 +2,10 @@ import { model, Schema } from 'mongoose';
 
 const regionSchema = new Schema(
   {
-    region: String,
-    slug: String,
-    level: String,
-    note: String,
+    region: {type:String},
+    slug: {type:String},
+    level:  {type:String},
+    note:  {type:String},
   },
   { versionKey: false },
 );
