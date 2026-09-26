@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 
 import { Segments } from 'celebrate';
 
-import { createFeedbackSchema } from './feedbackValidation.js';
+import { createFeedbackSchema } from '../../src/validations/feedbackValidation.js';
 
 const schema = createFeedbackSchema[Segments.BODY];
 const validPayload = {
@@ -43,9 +43,10 @@ describe('createFeedbackSchema', () => {
     assert.ok(validate({ rate: '5' }).error);
   });
 
-  it('requires description to contain from 1 to 200 characters', () => {
+  it('requires description to contain from 1 to 200 non-whitespace characters', () => {
     assert.ok(validate({ description: undefined }).error);
     assert.ok(validate({ description: '' }).error);
+    assert.ok(validate({ description: '   ' }).error);
     assert.ok(validate({ description: 'a'.repeat(201) }).error);
   });
 
