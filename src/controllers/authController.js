@@ -25,3 +25,25 @@ export const registerUser = async (req, res) => {
 
   res.status(201).json(newUser);
 };
+
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  const normalizedEmail = email.toLowerCase();
+  const user = await User.findOne({ email: normalizedEmail });
+
+  if (!user) {
+    throw createHttpError(401, 'Invalid email or password');
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordCorrect) {
+    throw createHttpError(401, 'Invalid email or password');
+  }
+
+  const session = await createSession(user._id);
+
+  setSessionCookies(res, session);
+
+  res.status(200).json(user);
+};
