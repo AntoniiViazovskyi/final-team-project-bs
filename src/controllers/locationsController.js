@@ -6,7 +6,7 @@ const escapeRegExp = value => {
 };
 
 export const getAllLocations = async (req, res) => {
-const {page = 1, limit = 10, region, type, search, rate, sortBy = 'rate',  sortOrder = 'desc'} = req.query;
+const {page = 1, limit = 10, region, type, search, rate, sortBy = 'rate', sortOrder = 'desc'} = req.query;
 
 const skip = (page - 1) * limit;
 
