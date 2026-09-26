@@ -32,26 +32,19 @@ describe('createLocationSchema', () => {
       description: validLocation.description,
       locationType: validLocation.locationType,
       region: validLocation.region,
-      coordinates: validLocation.coordinates,
+      image: validLocation.image,
     };
 
     assert.equal(createBody.validate(minimal).error, undefined);
   });
 
-  it('accepts an empty image', () => {
-    assert.equal(
-      createBody.validate({ ...validLocation, image: '' }).error,
-      undefined,
-    );
-  });
-
-  it('requires name, description, locationType, region and coordinates', () => {
+  it('requires name, description, locationType, region and image', () => {
     const requiredFields = [
       'name',
       'description',
       'locationType',
       'region',
-      'coordinates',
+      'image',
     ];
 
     for (const field of requiredFields) {
@@ -62,23 +55,65 @@ describe('createLocationSchema', () => {
     }
   });
 
-  it('requires name to contain from 2 to 100 characters', () => {
-    assert.ok(createBody.validate({ ...validLocation, name: 'a' }).error);
+  it('requires name to contain from 3 to 96 characters', () => {
+    assert.ok(createBody.validate({ ...validLocation, name: 'ab' }).error);
+    assert.equal(
+      createBody.validate({ ...validLocation, name: 'abc' }).error,
+      undefined,
+    );
     assert.ok(
-      createBody.validate({ ...validLocation, name: 'a'.repeat(101) }).error,
+      createBody.validate({ ...validLocation, name: 'a'.repeat(97) }).error,
+    );
+    assert.equal(
+      createBody.validate({ ...validLocation, name: 'a'.repeat(96) }).error,
+      undefined,
     );
     assert.ok(createBody.validate({ ...validLocation, name: '   ' }).error);
   });
 
-  it('requires description to contain from 1 to 500 characters', () => {
-    assert.ok(createBody.validate({ ...validLocation, description: '' }).error);
+  it('requires description to contain from 20 to 6000 characters', () => {
     assert.ok(
-      createBody.validate({ ...validLocation, description: '   ' }).error,
-    );
-    assert.ok(
-      createBody.validate({ ...validLocation, description: 'a'.repeat(501) })
+      createBody.validate({ ...validLocation, description: 'a'.repeat(19) })
         .error,
     );
+    assert.equal(
+      createBody.validate({ ...validLocation, description: 'a'.repeat(20) })
+        .error,
+      undefined,
+    );
+    assert.ok(
+      createBody.validate({ ...validLocation, description: 'a'.repeat(6001) })
+        .error,
+    );
+    assert.equal(
+      createBody.validate({ ...validLocation, description: 'a'.repeat(6000) })
+        .error,
+      undefined,
+    );
+  });
+
+  it('requires locationType and region to be at most 64 characters', () => {
+    assert.ok(
+      createBody.validate({
+        ...validLocation,
+        locationType: 'a'.repeat(65),
+      }).error,
+    );
+    assert.ok(
+      createBody.validate({ ...validLocation, region: 'a'.repeat(65) }).error,
+    );
+    assert.equal(
+      createBody.validate({
+        ...validLocation,
+        locationType: 'a'.repeat(64),
+        region: 'a'.repeat(64),
+      }).error,
+      undefined,
+    );
+  });
+
+  it('rejects an empty image', () => {
+    assert.ok(createBody.validate({ ...validLocation, image: '' }).error);
   });
 
   it('requires image to be an http(s) url when provided', () => {
@@ -160,9 +195,12 @@ describe('updateLocationSchema', () => {
   });
 
   it('applies the same field rules as creation', () => {
-    assert.ok(updateBody.validate({ name: 'a' }).error);
-    assert.ok(updateBody.validate({ description: '' }).error);
+    assert.ok(updateBody.validate({ name: 'ab' }).error);
+    assert.ok(updateBody.validate({ description: 'a'.repeat(19) }).error);
+    assert.ok(updateBody.validate({ locationType: 'a'.repeat(65) }).error);
+    assert.ok(updateBody.validate({ region: 'a'.repeat(65) }).error);
     assert.ok(updateBody.validate({ image: 'not-a-url' }).error);
+    assert.ok(updateBody.validate({ image: '' }).error);
     assert.ok(updateBody.validate({ coordinates: { lat: 91 } }).error);
     assert.ok(updateBody.validate({ advantages: [1] }).error);
   });

@@ -1,14 +1,13 @@
 import { Joi, Segments } from 'celebrate';
 
 const locationFields = {
-  name: Joi.string().trim().min(2).max(100),
-  description: Joi.string().trim().min(1).max(500),
-  locationType: Joi.string().trim().min(1).max(100),
-  region: Joi.string().trim().min(1).max(100),
+  name: Joi.string().trim().min(3).max(96),
+  description: Joi.string().trim().min(20).max(6000),
+  locationType: Joi.string().trim().min(1).max(64),
+  region: Joi.string().trim().min(1).max(64),
   image: Joi.string()
     .uri({ scheme: ['http', 'https'] })
-    .max(500)
-    .allow(''),
+    .max(500),
   advantages: Joi.array().items(Joi.string().trim().min(1).max(100)).max(20),
   coordinates: Joi.object({
     lat: Joi.number().min(-90).max(90).required(),
@@ -23,7 +22,7 @@ export const createLocationSchema = {
     description: locationFields.description.required(),
     locationType: locationFields.locationType.required(),
     region: locationFields.region.required(),
-    coordinates: locationFields.coordinates.required(),
+    image: locationFields.image.required(),
   }).unknown(false),
 };
 
